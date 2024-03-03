@@ -35,50 +35,45 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        textView = textView.findViewById(R.id.textView);
+        textView1 = textView.findViewById(R.id.textView2);
+        textView2 = textView.findViewById(R.id.textView3);
 
+        sensorListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                // Valors de l'acceleròmetre en m/s^2
+                float xAcc = sensorEvent.values[0];
+                float yAcc = sensorEvent.values[1];
+                float zAcc = sensorEvent.values[2];
+                textView.setText("" + xAcc);
+                textView1.setText("" + yAcc);
+                textView2.setText("" + zAcc);
+
+                // Processament o visualització de dades...
+
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+
+            }
+        };
+
+
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        // registrem el Listener per capturar els events del sensor
+        if( sensor!=null ) {
+            sensorManager.registerListener(sensorListener,sensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
 
 
         return root;
 
-
-
-
-    }
-    textView = findViewById(R.id.textView);
-    textView1 = findViewById(R.id.textView2);
-    textView2 = findViewById(R.id.textView3);
-    sensorListener = new SensorEventListener()
-    {
-        @Override
-        public void onSensorChanged(SensorEvent sensorEvent) {
-            // Valors de l'acceleròmetre en m/s^2
-            float xAcc = sensorEvent.values[0];
-            float yAcc = sensorEvent.values[1];
-            float zAcc = sensorEvent.values[2];
-            textView.setText("" + xAcc);
-            textView1.setText("" + yAcc);
-            textView2.setText("" + zAcc);
-
-            // Processament o visualització de dades...
-
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int i) {
-
-
-        }
-    };
-
-
-
-    sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-    sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-    // registrem el Listener per capturar els events del sensor
-        if( sensor!=null ) {
-        sensorManager.registerListener(sensorListener,sensor,
-                SensorManager.SENSOR_DELAY_NORMAL);
     }
 
 
